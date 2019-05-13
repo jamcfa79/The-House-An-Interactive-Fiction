@@ -190,14 +190,24 @@ player = new Player()
 
 //Create your objects
 let hallway = new Room("dusty hallway", "clouds of dust kick up with every step.");
-let vase = new Item("vase", "made of blue glass, chipped on top. Filled with a dark liquid.")
-
-let room = new Room("dark room", "It is dark");
+let mainHall = new Room("main hall", "decadant furnishings adorn the great room");
+let furCoat = new Item("fur coat", "warm and sturdy, this will protect against the elements.");
+let kitchen = new Room("kitchen", "covered in viscous fluid and meat, it is freezing");
+let mysteryMeat = new Item("mystery meat", "odd in shape and scent, the meat is stacked with reckless abandon.");
+let foggyHallway = new Room("foggy hallway", "pools of electrified blood coat the floor, it blocks the path ahead.");
+let blood = new Item("blood", "coating the floor, it makes traversal a fatal experience.");
+let morgue = new Room("morgue", "pugent and horrid smells invade your nostrils.");
+let bodies = new Item("bodies", "heaps of dead corpses now decorate the room, still fresh from slaughter. Their hands are still bound with rope.");
+let bottomlessPit = new Room("bottomless pit", "with no end in sight, you hear growling from below.");
+let pit = new Room("pit", "dark and cavernous, this room is hiding something...");
+let wolf = new Item("wolf", "vicous and wild, this wolf is protecting his territory.");
+let keychain = new Item("keychain", "dangling around the wolf's neck lie a ring of keys, old and rustic.");
+let Ornatechest = new Item("ornate chest", "coated in runic symbols, it is under heavy lock and key.");
 
 // Put them in their spots
 hallway.addItem(vase);
 let locations = [];
-locations.push(hallway, room);
+locations.push(hallway, mainHall, Kitchen);
 player.location = new Room("hallway", "It is dark. The floorboards creak when you walk.");
 player.location.addItems(locations);
 
