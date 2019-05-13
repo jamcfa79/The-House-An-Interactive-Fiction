@@ -5,6 +5,7 @@ var regexes = [
   /go back/,
   /inspect/,
 ]
+
 function parse(input) {
   let articleRegex = / the| a| an/
   input = input.replace(articleRegex, '')
@@ -35,7 +36,11 @@ function doAction(results, player, newLocation) {
   }
   if (results[1] == 'inspect') {
     console.log("Inspecting " + newLocation.name)
-    newLocation.inspect()
+
+    newLocation.inspect(player)
+
+
+
   }
   if (results[1] == 'go back') {
     let destination = player.cameFrom;
@@ -58,33 +63,26 @@ function keyDownHandler(e) {
       // Parse the input
       let results = parse(input);
       let newLocation
+
+
+      let i = 0
+      //while(newLocation == null) {
       for (i = 0; i < player.location.contents.length; i++) {
+        console.log(player.location.name == results[0])
         if (results[0] == player.location.contents[i].name) {
           console.log("Match!")
-          newLocation = player.location.contents[i]
-        } else if(results[0] == player.location.name) {
-          console.log("Action refers to self!")
-          newLocation = player.location;
-          console.log(newLocation.descriptor)
+          newLocation = player.location.contents[i];
         }
+      }
+      if (results[0] == player.location.name) {
+        console.log("Action refers to self!");
+        newLocation = player.location;
+        console.log(newLocation.descriptor);
       }
 
       player = doAction(results, player, newLocation)
-      // if (results[1] == 'enter' && newLocation != null) {
-      //   player.cameFrom = player.location;
-      //   player.location = newLocation
-      //   player.location.enter();
-      // }
-      // if (results[1] == 'inspect' && newLocation != null) {
-      //   console.log("Inspecting...")
-      //   newLocation.inspect()
-      // }
-      // if (results[1] == 'go back') {
-      //   let destination = player.cameFrom;
-      //   player.cameFrom = player.location;
-      //   player.location = destination;
-      //   player.location.enter();
-      // }
+      console.log("Player location: " + player.location.name)
+
     } else {
       addLine("Time passes... You start feeling nervous.")
     }
@@ -134,19 +132,20 @@ class Room {
           contents = contents + this.contents[i].name + ", ";
         }
       }
-      if (this.descriptor) {
-        addLine(this.descriptor)
-      }
       addLine("You see a " + contents);
     } else {
       addLine("You see nothing")
     }
   }
 
-  inspect() {
-    if(this.descriptor) {
+
+  inspect(player) {
+    if (this.descriptor && player.location == this) {
       console.log("Printing description")
       addLine(this.descriptor);
+    } else {
+      addLine("You're too far away to see it well.")
+
     }
   }
 
@@ -192,16 +191,15 @@ player = new Player()
 //Create your objects
 let hallway = new Room("dusty hallway", "clouds of dust kick up with every step.");
 let vase = new Item("vase", "made of blue glass, chipped on top. Filled with a dark liquid.")
-let room = new Room("dark room", "it is dark");
+
+let room = new Room("dark room", "It is dark");
 
 // Put them in their spots
 hallway.addItem(vase);
-
-start = new Room("hallway", "It is dark. The floorboards creak when you walk.");
-start.addItem(hallway);
-start.addItem(room);
-
-player.location = start;
+let locations = [];
+locations.push(hallway, room);
+player.location = new Room("hallway", "It is dark. The floorboards creak when you walk.");
+player.location.addItems(locations);
 
 
 player.location.enter();
