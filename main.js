@@ -36,7 +36,11 @@ function doAction(results, player, newLocation) {
   }
   if (results[1] == 'inspect') {
     console.log("Inspecting " + newLocation.name)
+
     newLocation.inspect(player)
+
+
+
   }
   if (results[1] == 'go back') {
     let destination = player.cameFrom;
@@ -60,6 +64,7 @@ function keyDownHandler(e) {
       let results = parse(input);
       let newLocation
 
+
       let i = 0
       //while(newLocation == null) {
       for (i = 0; i < player.location.contents.length; i++) {
@@ -77,6 +82,7 @@ function keyDownHandler(e) {
 
       player = doAction(results, player, newLocation)
       console.log("Player location: " + player.location.name)
+
     } else {
       addLine("Time passes... You start feeling nervous.")
     }
@@ -132,12 +138,14 @@ class Room {
     }
   }
 
+
   inspect(player) {
     if (this.descriptor && player.location == this) {
       console.log("Printing description")
       addLine(this.descriptor);
     } else {
       addLine("You're too far away to see it well.")
+
     }
   }
 
@@ -183,6 +191,7 @@ player = new Player()
 //Create your objects
 let hallway = new Room("dusty hallway", "clouds of dust kick up with every step.");
 let vase = new Item("vase", "made of blue glass, chipped on top. Filled with a dark liquid.")
+
 let room = new Room("dark room", "It is dark");
 
 // Put them in their spots
@@ -191,5 +200,6 @@ let locations = [];
 locations.push(hallway, room);
 player.location = new Room("hallway", "It is dark. The floorboards creak when you walk.");
 player.location.addItems(locations);
+
 
 player.location.enter();
