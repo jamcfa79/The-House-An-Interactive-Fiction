@@ -1,10 +1,12 @@
 // Handle user input
+
+var regexes = [
+  /enter/,
+  /go back/,
+  /inspect/,
+]
+
 function parse(input) {
-  let regexes = [
-    /enter/,
-    /go back/,
-    /inspect/,
-  ]
   let articleRegex = / the| a| an/
   input = input.replace(articleRegex, '')
   let action;
@@ -26,6 +28,24 @@ function parse(input) {
   return results
 }
 
+function doAction(results, player, newLocation) {
+  if (results[1] == 'enter' && newLocation != null) {
+    player.cameFrom = player.location;
+    player.location = newLocation
+    player.location.enter();
+  }
+  if (results[1] == 'inspect') {
+    console.log("Inspecting " + newLocation.name)
+    newLocation.inspect(player)
+  }
+  if (results[1] == 'go back') {
+    let destination = player.cameFrom;
+    player.cameFrom = player.location;
+    player.location = destination;
+    player.location.enter();
+  }
+  return player
+}
 
 // This function gets triggered whenever the 'enter' key gets pressed
 document.addEventListener("keydown", keyDownHandler, false);
@@ -39,29 +59,24 @@ function keyDownHandler(e) {
       // Parse the input
       let results = parse(input);
       let newLocation
-      console.log(results[0])
-      for (i = 0; i < myLocation.contents.length; i++) {
 
-        if (results[0] == myLocation.contents[i].name) {
+      let i = 0
+      //while(newLocation == null) {
+      for (i = 0; i < player.location.contents.length; i++) {
+        console.log(player.location.name == results[0])
+        if (results[0] == player.location.contents[i].name) {
           console.log("Match!")
-          newLocation = myLocation.contents[i]
+          newLocation = player.location.contents[i];
         }
       }
-      if (results[1] == 'enter' && newLocation != null) {
-        cameFrom = myLocation;
-        myLocation = newLocation
-        myLocation.enter();
+      if (results[0] == player.location.name) {
+        console.log("Action refers to self!");
+        newLocation = player.location;
+        console.log(newLocation.descriptor);
       }
-      if (results[1] == 'inspect' && newLocation != null) {
-        console.log("Inspecting...")
-        newLocation.inspect()
-      }
-      if (results[1] == 'go back') {
-        let destination = cameFrom;
-        cameFrom = myLocation;
-        myLocation = destination;
-        myLocation.enter();
-      }
+
+      player = doAction(results, player, newLocation)
+      console.log("Player location: " + player.location.name)
     } else {
       addLine("Time passes... You start feeling nervous.")
     }
@@ -111,12 +126,18 @@ class Room {
           contents = contents + this.contents[i].name + ", ";
         }
       }
-      if (this.descriptor) {
-        addLine(this.descriptor)
-      }
       addLine("You see a " + contents);
     } else {
       addLine("You see nothing")
+    }
+  }
+
+  inspect(player) {
+    if (this.descriptor && player.location == this) {
+      console.log("Printing description")
+      addLine(this.descriptor);
+    } else {
+      addLine("You're too far away to see it well.")
     }
   }
 
@@ -148,19 +169,27 @@ class Item {
   }
 }
 
-
+class Player {
+  constructor(location) {
+    this.location = location;
+    this.cameFrom = null;
+  }
+}
 
 // Create the contents of your room here.
-alert("Loading main.js!");
-var cameFrom;
-let hallway = new Room("dusty hallway");
+alert("Loading main.js!"); //Don't change this line
+player = new Player()
+
+//Create your objects
+let hallway = new Room("dusty hallway", "clouds of dust kick up with every step.");
 let vase = new Item("vase", "made of blue glass, chipped on top. Filled with a dark liquid.")
-let room = new Room("dark room");
+let room = new Room("dark room", "It is dark");
+
+// Put them in their spots
 hallway.addItem(vase);
 let locations = [];
 locations.push(hallway, room);
-var myLocation = new Room("hallway");
+player.location = new Room("hallway", "It is dark. The floorboards creak when you walk.");
+player.location.addItems(locations);
 
-myLocation.addItems(locations);
-
-myLocation.enter();
+player.location.enter();
