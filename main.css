@@ -6,7 +6,6 @@ html {
   border:1px;
   border: solid;
   border: #ff0000;
-  font-weight: bold;
 }
 
 .form-control:focus{
