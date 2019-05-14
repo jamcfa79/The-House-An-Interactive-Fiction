@@ -192,22 +192,37 @@ player = new Player()
 let hallway = new Room("dusty hallway", "clouds of dust kick up with every step.");
 let mainHall = new Room("main hall", "decadant furnishings adorn the great room");
 let furCoat = new Item("fur coat", "warm and sturdy, this will protect against the elements.");
-let kitchen = new Room("kitchen", "covered in viscous fluid and meat, it is freezing");
-let mysteryMeat = new Item("mystery meat", "odd in shape and scent, the meat is stacked with reckless abandon.");
+let kitchen = new Room("kitchen", "covered in viscous fluid and meat, it is freezing cold");
+let mysteryMeat = new Item("hunk of mystery meat", "odd in shape and scent, the meat is stacked with reckless abandon.");
 let foggyHallway = new Room("foggy hallway", "pools of electrified blood coat the floor, it blocks the path ahead.");
-let blood = new Item("blood", "coating the floor, it makes traversal a fatal experience.");
+let fuse box = new Item("fuse box", "the blasted thing has been jerry rigged, it's malfuntioning internals releasing an electric current into the pools of blood below.");
+let blood = new Item("puddles of blood", "coating the floor, electrified by exposed wires, making traversal a fatal experience.");
 let morgue = new Room("morgue", "pugent and horrid smells invade your nostrils.");
-let bodies = new Item("bodies", "heaps of dead corpses now decorate the room, still fresh from slaughter. Their hands are still bound with rope.");
-let bottomlessPit = new Room("bottomless pit", "with no end in sight, you hear growling from below.");
+let coffins = new Item("hoards of coffins", "pile up high, they are freshly coated with dirt and vegetation.")
+let bodies = new Item("heap of dead bodies", "heaps of dead corpses now decorate the room, still fresh from slaughter. Their hands are still bound with rope.");
+let cavernousRoom = new Room("cavernous room", "a rocky outcrop of chizeled stone, there lays a large pit int the center of the room.");
+let torch = new Item("torch", "discarded and weathered, this should serve as a suitable light source.");
 let pit = new Room("pit", "dark and cavernous, this room is hiding something...");
 let wolf = new Item("wolf", "vicous and wild, this wolf is protecting his territory.");
-let keychain = new Item("keychain", "dangling around the wolf's neck lie a ring of keys, old and rustic.");
-let Ornatechest = new Item("ornate chest", "coated in runic symbols, it is under heavy lock and key.");
+let keychain = new Item("keychain", "dangling around the wolf's neck, they are quite old and rustic.");
+let ornateChest = new Item("ornate chest", "coated in runic symbols, it is under heavy lock and key.");
 
 // Put them in their spots
-hallway.addItem(vase);
+mainHall.addItem(furCoat);
+kitchen.addItem(foggyHallway);
+kitchen.addItem(mysteryMeat);
+foggyHallway.addItem(blood);
+foggyHallway.addItem(morgue);
+foggyHallway.addItem(cavernousRoom);
+morgue.addItem(bodies);
+morgue.addItem(coffins);
+pit.addItem(keychain);
+pit.addItem(ornateChest);
+pit.addItem(wolf);
+cavernousRoom.addItem(pit);
+cavernousRoom.addItem(torch);
 let locations = [];
-locations.push(hallway, mainHall, Kitchen);
+locations.push(hallway, kitchen, mainHall);
 player.location = new Room("hallway", "It is dark. The floorboards creak when you walk.");
 player.location.addItems(locations);
 
