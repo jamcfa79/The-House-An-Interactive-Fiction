@@ -47,16 +47,6 @@ let take = function(action, player, object) {
   return player;
 }
 
-keychain.take = function() {
-  addLine ("You remove the " + this.name + "from its mantle, they jingle as you attatch them to your hip")
-  Keychain = true
-}
-
-necronomicon.take = function() {
-  addLine ("You reach into the chest and remove the acrused text, the" + this.name + ".")
-  Necronomicon = true
-}
-
 let useaction = /use/;
 let use = function(action, player, object) {
   if (action == 'use') {
@@ -66,21 +56,7 @@ let use = function(action, player, object) {
   return player;
 }
 
-ornateChest.use = function() {
-  if (Keychain == true) {
-    addLine ("You unlock the " + this.name + ".")
-    pit.addItem(necronomicon);
-    let keychain = null;
-  }
-}
 
-mysteryMeat.use = function() {
-  if (Mysterymeat == true) {
-    addLine ("You feed the " + this.name + " to the wolf, it's defenses lower as it chows down.")
-    pit.addItem(keyChain);
-    let mysteryMeat = null;
-  }
-}
 
 addAction(useaction, use);
 
@@ -93,12 +69,10 @@ let hallway = new Room("dusty hallway", "clouds of dust kick up with every step.
 let mainHall = new Room("main hall", "decadant furnishings adorn the great room");
 let furCoat = new Item("fur coat", "warm and sturdy, this will protect against the elements.");
 let kitchen = new Room("kitchen", "covered in viscous fluid and meat, it is freezing cold");
-let metalGrate = new Door("metal grate", "small in size, it's just big enough to crawl through.")
 let mysteryMeat = new Item("hunk of mystery meat", "odd in shape and scent, the meat is stacked with reckless abandon.");
 let foggyHallway = new Room("foggy hallway", "pools of electrified blood coat the floor, it blocks the path ahead.");
 let fuseBox = new Item("fuse box", "the blasted thing has been jerry rigged, it's malfuntioning internals releasing an electric current into the pools of blood below.");
 let blood = new Item("pool of blood", "coating the floor, electrified by exposed wires, making traversal a fatal experience.");
-let metalDoor = new Door("metal door", "rusting and aging, it hangs on one hinge.")
 let morgue = new Room("morgue", "pugent and horrid smells invade your nostrils.");
 let coffins = new Item("hoards of coffins", "pile up high, they are freshly coated with dirt and vegetation.")
 let bodies = new Item("heap of dead bodies", "heaps of dead corpses now decorate the room, still fresh from slaughter. Their hands are still bound with rope.");
@@ -113,12 +87,10 @@ let necronomicon = new Item("Necronomicon", "cursed book with many hexes and inc
 mainHall.addItem(furCoat);
 kitchen.addItem(foggyHallway);
 kitchen.addItem(mysteryMeat);
-kitchen.addItem(metalGrate);
 foggyHallway.addItem(blood);
 foggyHallway.addItem(morgue);
 foggyHallway.addItem(cavernousRoom);
 foggyHallway.addItem(fuseBox);
-foggyHallway.addItem(metalDoor);
 morgue.addItem(bodies);
 morgue.addItem(coffins);
 pit.addItem(ornateChest);
