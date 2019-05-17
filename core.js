@@ -7,20 +7,20 @@ var regexes = [
 ]
 
 var actions = [
-  function (action, player, object) {
+  function(action, player, object) {
     if (action == 'enter' && object != null) {
       player.move(object)
     }
     return player;
   },
-  function (action, player, object) {
+  function(action, player, object) {
     if (action == 'inspect') {
       console.log("Inspecting " + object.name)
       object.inspect(player)
     }
     return player;
   },
-  function (action, player, object) {
+  function(action, player, object) {
     if (action == 'go back') {
       let destination = player.cameFrom;
       player.cameFrom = player.location;
@@ -57,14 +57,26 @@ function addAction(actionName, actionFunction) {
   console.log("Adding action...")
   regexes.push(actionName);
   actions.push(actionFunction);
-  for(i in regexes) {
+  for (i in regexes) {
     console.log(regexes[i])
   }
 }
 
 function doAction(action, player, newLocation) {
-  for(i in actions) {
-    player = actions[i](action, player, newLocation);
+  let e = 0;
+  for (i in actions) {
+    try {
+      throw player = actions[i](action, player, newLocation);
+    } catch (err) {
+      if (err != null) {
+        e++;
+      }
+      console.log(err)
+    }
+  }
+  console.log(actions.length);
+  if (e < actions.length - 1) {
+    addLine("You can't do that.");
   }
   return player
 }
@@ -133,8 +145,8 @@ class Room {
 
   enter() {
 
-    addLine("You find yourself in a " + this.name + ".")
 
+    let text;
     //Get contents of room
     let contents = ""
     if (this.contents.length > 0) {
@@ -149,10 +161,11 @@ class Room {
           contents = contents + this.contents[i].name + ", ";
         }
       }
-      addLine("You see a " + contents);
+      text = "You see a " + contents;
     } else {
-      addLine("You see nothing")
+      text = "You see nothing.";
     }
+    addLine("You find yourself in a " + this.name + ". " + text);
   }
 
   inspect(player) {
