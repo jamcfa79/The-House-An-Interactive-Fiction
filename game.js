@@ -4,6 +4,7 @@ var scripts1 = [
   'derick',
   'Ediomar',
   'james',
+  'gio',
 ];
 
 var scripts2 = [
