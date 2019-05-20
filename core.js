@@ -4,12 +4,14 @@ var regexes = [
   /enter/,
   /go back/,
   /inspect/,
+  /exit/,
 ]
 
 var actions = [
   function(action, player, object) {
     if (action == 'enter' && object != null) {
-      player.move(object)
+      let destination = object.enter();
+      player.move(destination)
     }
     return player;
   },
@@ -22,17 +24,20 @@ var actions = [
   },
   function(action, player, object) {
     if (action == 'go back') {
-      let destination = player.cameFrom;
-      player.cameFrom = player.location;
-      player.location = destination;
-      player.location.enter();
+      player.move(player.cameFrom);
     }
     return player;
   },
+  function(action, player, object) {
+    if(action == 'exit') {
+      location.reload();
+    }
+    return player;
+  }
 ]
 
 function parse(input) {
-  let articleRegex = / the| a| an/
+  let articleRegex = /the |a |an /
   input = input.replace(articleRegex, '')
   let action;
   let location;
@@ -144,8 +149,10 @@ class Room {
   }
 
   enter() {
+    return this;
+  }
 
-
+  readContents() {
     let text;
     //Get contents of room
     let contents = ""
@@ -193,6 +200,35 @@ class Room {
   }
 }
 
+class Door extends Room {
+  constructor(name, descriptor) {
+    super(name, descriptor);
+    this.locked = true;
+    this.contents = null;
+  }
+
+  addItem(obj) {
+    this.contents = obj;
+  }
+
+  enter() {
+    if(this.locked == false) {
+      return this.contents;
+    } else {
+      addLine("The door is locked")
+      return null;
+    }
+  }
+
+  open() {
+    if(this.locked == false) {
+      player.move(this.contents[0])
+    } else {
+      addLine("The door is locked")
+    }
+  }
+}
+
 class Item {
   constructor(name, descriptor) {
     this.name = name;
@@ -211,9 +247,38 @@ class Player {
     this.cameFrom = null;
   }
 
-  move(location) {
-    this.cameFrom = this.location
-    this.location = location;
-    this.location.enter();
+  move(destination) {
+    if (destination != null) {
+      this.cameFrom = this.location
+      this.location = destination;
+      this.location.readContents();
+    }
+  }
+}
+
+class Module extends Room {
+  constructor(name, script, description) {
+    super(name, description);
+    this.script = script;
+  }
+
+  enter() {
+    this.addModule();
+    return this;
+  }
+
+  addModule() {
+    let body = document.getElementsByTagName('body')[0];
+    let script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.onload = function() {
+      //You can put a load thing here.
+    }
+    script.src = this.script;
+    body.appendChild(script);
+  }
+
+  readContents() {
+    console.log("Moving to new module...")
   }
 }

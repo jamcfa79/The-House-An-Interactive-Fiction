@@ -1,3 +1,5 @@
+
+
 alert("Loading main.js!"); //Don't change this line
 player = new Player()
 
@@ -8,7 +10,8 @@ let room = new Room("dark room", "It is dark");
 let bedroom = new Room('bedroom', 'It is a bedroom')
 var key = new Item('rusty key', 'It is a large, heavy brass key.')
 let dungeon = new Room('dungeon', 'Long, rusty chains hang from hooks on the walls. The floor is damp, and the room smells of mold and must.')
-
+let door = new Door('door')
+door.addItem(room);
 
 //1.) Create the function & the search term
 let jumpaction = /jump/;
@@ -44,8 +47,6 @@ Item.prototype.eat = function() {
   addLine("You ate the " + this.name);
 }
 
-//Add the function to the action list
-
 
 
 // Put them in their spots
@@ -54,6 +55,7 @@ hallway.addItem(room);
 hallway.addItem(key);
 room.addItem(bedroom);
 room.addItem(hallway);
+hallway.addItem(door);
 
 
 player.move(hallway)
