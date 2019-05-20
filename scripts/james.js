@@ -20,6 +20,9 @@ enter() {
     if (player.location.name == 'foggyHallway') {
       addLine("The electrified blood would be rather unpleasant, find a way to get rid of it.");
     }
+    if (player.location.name == 'cavernous room') {
+      addLine("The fall would most certainly kill you, best not step too close.")
+    }
   } else {
     let contents = ""
     if (this.contents.length > 0) {
@@ -100,21 +103,22 @@ pit.addItem(ornateChest);
 pit.addItem(wolf);
 cavernousRoom.addItem(pit);
 
-if (player.location.name == 'pit' && mysterymeat == false) {
+if (player.location == pit && mysterymeat == false) {
   addLine("The vicous creature pounces upon you without hesitation, consuming you alive. Ouch.");
+  addLine("Bad end (definetely).")
   player.move = hallway
 }
 
 furCoat.use = function() {
-  if (player.location.name == 'metalDoor') {
+  if (player.location == hallway) {
     addLine("You don the fur coat, this should protect you against the ensuing cold.");
     metalDoor.locked = false;
-  }
-  if (player.location.name == 'foggyHallway') {
+  }else {
+   addLine("You look rather dapper.");
+ }
+  if (player.location == foggyHallway) {
     addLine("You lay the fur coat down, it soaks up the blood, you can now pass through.");
     foggyHallway.locked = false;
-  } else {
-    addLine("You look rather dapper.");
   }
 }
 
@@ -123,7 +127,7 @@ furCoat.take = function() {
 }
 
 rope.use = function() {
-  if (player.location.name == 'cavernousRoom') {
+  if (player.location == cavernousRoom) {
     addLine("You attatch the rope bindings end to end and begin down the large pit.");
     cavernousRoom.locked = false;
   }
@@ -134,7 +138,7 @@ rope.take = function() {
 }
 
 mysteryMeat.use = function() {
-  if (player.location.name == 'pit') {
+  if (player.location == pit) {
     addLine("You toss out the meat, leaving the wolf to it's dinner.");
     pit.addItem(keychain);
   } else {
@@ -148,7 +152,7 @@ mysteryMeat.take = function() {
 }
 
 keychain.use = function() {
-  if (player.location.name == 'pit') {
+  if (player.location == pit) {
     addLine("You unlock the chest, revealing it's contents.");
     pit.addItem(necronomicon);
   } else {
@@ -158,6 +162,12 @@ keychain.use = function() {
 
 keychain.take = function() {
   addLine("You loose the keys from around the wolf's neck.");
+}
+
+necronomicon.use = function() {
+  addLine("Your poor Italian conjures a demon of immense power, he steps through the portal with an immense smile. Thanks for playing!");
+  addLine("Good end (?).")
+  player.move = hallway
 }
 
 let locations = [];
