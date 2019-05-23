@@ -106,12 +106,12 @@ if (player.location.name == 'pit' && mysterymeat == false) {
 }
 
 furCoat.use = function() {
-  if (player.location.name == 'metalDoor') {
+  if (player.location.name == 'hallway') {
     addLine("You don the fur coat, this should protect you against the ensuing cold.");
     metalDoor.locked = false;
   }
   if (player.location.name == 'foggyHallway') {
-    addLine("You lay the fur coat down, it soaks up the blood, you can now pass through.");
+    addLine("You lay the fur coat down, it soaks up the blood.");
     foggyHallway.locked = false;
   } else {
     addLine("You look rather dapper.");
