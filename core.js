@@ -104,8 +104,14 @@ function keyDownHandler(e) {
       for (i = 0; i < player.location.contents.length; i++) {
         console.log(player.location.name == results[0])
         if (results[0] == player.location.contents[i].name) {
-          console.log("Match!")
+          console.log("Match in room!")
           newLocation = player.location.contents[i];
+        }
+      }
+      for (i = 0; i < player.inventory.length; i++) {
+        if (results[0] == player.inventory[i].name) {
+          console.log("Match in inventory!")
+          newLocation = player.inventory[i];
         }
       }
       if (results[0] == player.location.name) {
@@ -245,6 +251,7 @@ class Player {
   constructor(location) {
     this.location = location;
     this.cameFrom = null;
+    this.inventory = [];
   }
 
   move(destination) {
